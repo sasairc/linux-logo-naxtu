@@ -1,0 +1,58 @@
+diff -cr a/drivers/video/logo/Kconfig b/drivers/video/logo/Kconfig
+*** a/drivers/video/logo/Kconfig	2015-11-02 09:05:25.000000000 +0900
+--- b/drivers/video/logo/Kconfig	2016-01-07 04:46:28.070180241 +0900
+***************
+*** 27,32 ****
+--- 27,36 ----
+  	bool "Standard 224-color Linux logo"
+  	default y
+  
++ config LOGO_NAXTU_CLUT224
++ 	bool "224-color NAXTU logo"
++ 	default y
++ 
+  config LOGO_BLACKFIN_VGA16
+  	bool "16-colour Blackfin Processor Linux logo"
+  	depends on BLACKFIN
+diff -cr a/drivers/video/logo/Makefile b/drivers/video/logo/Makefile
+*** a/drivers/video/logo/Makefile	2015-11-02 09:05:25.000000000 +0900
+--- b/drivers/video/logo/Makefile	2016-01-07 04:34:22.902890941 +0900
+***************
+*** 15,20 ****
+--- 15,21 ----
+  obj-$(CONFIG_LOGO_SUPERH_VGA16)		+= logo_superh_vga16.o
+  obj-$(CONFIG_LOGO_SUPERH_CLUT224)	+= logo_superh_clut224.o
+  obj-$(CONFIG_LOGO_M32R_CLUT224)		+= logo_m32r_clut224.o
++ obj-$(CONFIG_LOGO_NAXTU_CLUT224)		+= logo_naxtu_clut224.o
+  
+  obj-$(CONFIG_SPU_BASE)			+= logo_spe_clut224.o
+  
+diff -cr a/drivers/video/logo/logo.c b/drivers/video/logo/logo.c
+*** a/drivers/video/logo/logo.c	2015-11-02 09:05:25.000000000 +0900
+--- b/drivers/video/logo/logo.c	2016-01-07 04:29:19.120089998 +0900
+***************
+*** 111,116 ****
+--- 111,120 ----
+  		/* M32R Linux logo */
+  		logo = &logo_m32r_clut224;
+  #endif
++ #ifdef CONFIG_LOGO_NAXTU_CLUT224
++ 		/* NAXTU Linux logo */
++ 		logo = &logo_naxtu_clut224;
++ #endif
+  	}
+  	return logo;
+  }
+diff -cr a/include/linux/linux_logo.h b/include/linux/linux_logo.h
+*** a/include/linux/linux_logo.h	2015-11-02 09:05:25.000000000 +0900
+--- b/include/linux/linux_logo.h	2016-01-07 04:30:11.459400487 +0900
+***************
+*** 47,52 ****
+--- 47,53 ----
+  extern const struct linux_logo logo_superh_clut224;
+  extern const struct linux_logo logo_m32r_clut224;
+  extern const struct linux_logo logo_spe_clut224;
++ extern const struct linux_logo logo_naxtu_clut224;
+  
+  extern const struct linux_logo *fb_find_logo(int depth);
+  #ifdef CONFIG_FB_LOGO_EXTRA
